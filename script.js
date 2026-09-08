@@ -44,7 +44,7 @@ function createPDF() {
 
             <div class="evidence-image">
 
-                <img src="${imageURL}" alt="شاهد">
+                <img src="${imageURL}" alt="شاهد ${i + 1}">
 
             </div>
 
@@ -70,7 +70,7 @@ function createPDF() {
 
     size: A4;
 
-    margin: 10mm;
+    margin: 8mm;
 
 }
 
@@ -94,7 +94,7 @@ body {
 
     background: white;
 
-    font-size: 13px;
+    font-size: 12px;
 
 }
 
@@ -102,9 +102,9 @@ body {
 
     position: relative;
 
-    height: 105px;
+    height: 90px;
 
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 
 }
 
@@ -120,7 +120,7 @@ body {
 
     font-weight: bold;
 
-    line-height: 1.5;
+    line-height: 1.4;
 
 }
 
@@ -140,7 +140,7 @@ body {
 
 .logo-area img {
 
-    width: 115px;
+    width: 100px;
 
     height: auto;
 
@@ -152,9 +152,9 @@ h1 {
 
     color: #2e7d32;
 
-    font-size: 20px;
+    font-size: 19px;
 
-    margin: 5px 0 10px;
+    margin: 4px 0 7px;
 
 }
 
@@ -174,13 +174,13 @@ h1 {
 
     border: 1px solid #2e7d32;
 
-    padding: 7px;
+    padding: 5px;
 
     vertical-align: top;
 
     background: #f1f8f2;
 
-    height: 55px;
+    height: 45px;
 
 }
 
@@ -190,7 +190,7 @@ h1 {
 
     font-weight: bold;
 
-    margin-bottom: 4px;
+    margin-bottom: 3px;
 
 }
 
@@ -200,11 +200,11 @@ h1 {
 
     border: 1px solid #a5cfa7;
 
-    border-radius: 4px;
+    border-radius: 3px;
 
-    padding: 5px;
+    padding: 4px;
 
-    min-height: 22px;
+    min-height: 18px;
 
     white-space: pre-wrap;
 
@@ -220,19 +220,19 @@ h1 {
 
     background: #f1f8f2;
 
-    padding: 7px;
+    padding: 5px;
 
 }
 
 .full-row .value {
 
-    min-height: 35px;
+    min-height: 25px;
 
 }
 
 .evidence-page {
 
-    margin-top: 7px;
+    margin-top: 6px;
 
 }
 
@@ -246,21 +246,23 @@ h1 {
 
     font-weight: bold;
 
-    padding: 7px;
+    padding: 5px;
 
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 
 }
+
+/* شبكة الصور */
 
 .evidence-image {
 
     display: inline-block;
 
-    width: 30%;
+    width: 23%;
+
+    margin: 0.5%;
 
     text-align: center;
-
-    margin: 3px;
 
     vertical-align: top;
 
@@ -272,9 +274,15 @@ h1 {
 
     width: 100%;
 
-    max-height: 90px;
+    height: 70px;
 
     object-fit: contain;
+
+    border: 1px solid #a5cfa7;
+
+    padding: 2px;
+
+    background: white;
 
 }
 
@@ -284,7 +292,7 @@ h1 {
 
     justify-content: space-between;
 
-    margin-top: 10px;
+    margin-top: 8px;
 
     page-break-inside: avoid;
 
@@ -331,12 +339,12 @@ h1 {
         <div>المملكة العربية السعودية</div>
 
         <div>وزارة التعليم</div>
-
         <div>الإدارة العامة للتعليم بجدة</div>
 
         <div>الابتدائية الثانية عشرة والروضة الملحقة</div>
 
     </div>
+
     <div class="logo-area">
 
         <img src="logo.jpg" alt="شعار وزارة التعليم">
