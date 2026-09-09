@@ -193,21 +193,29 @@
 
                     <label>الشواهد (صور)</label>
 
-<div id="imageInputs">
+<input
 
-    <div class="image-input">
+    type="file"
 
-        <input type="file" class="evidenceImage" accept="image/*">
+    id="imagePicker"
 
-    </div>
+    accept="image/*"
 
-</div>
+    multiple
 
-<button type="button" onclick="addImageInput()">
+    onchange="handleImages(this)"
 
-    ➕ إضافة صورة أخرى
+    style="display: none;"
+
+>
+
+<button type="button" onclick="document.getElementById('imagePicker').click()">
+
+    📸 إضافة الصور
 
 </button>
+
+<div id="selectedImages"></div>
 
                 </div>
 
