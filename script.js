@@ -76,19 +76,7 @@ function createPDF() {
 
     for (let i = 0; i < images.length; i++) {
 
-    const imageURL = URL.createObjectURL(images[i]);
-
-    imageHTML += `
-
-        <div class="evidence-image">
-
-            <img src="${imageURL}" alt="شاهد ${i + 1}">
-
-        </div>
-
-    `;
-
-}
+    
 
     const imageURL = URL.createObjectURL(images[i].files[0]);
 
