@@ -1,41 +1,3 @@
-function handleImages(input) {
-
-    const container = document.getElementById("selectedImages");
-
-    // عرض أسماء الصور المختارة
-
-    container.innerHTML = "";
-
-    for (let i = 0; i < input.files.length; i++) {
-
-        const item = document.createElement("div");
-
-        item.textContent = "📷 " + input.files[i].name;
-
-        item.style.margin = "5px 0";
-
-        container.appendChild(item);
-
-    }
-
-}
-function addImageInput() {
-
-    const container = document.getElementById("imageInputs");
-
-    const newInput = document.createElement("div");
-
-    newInput.className = "image-input";
-
-    newInput.innerHTML = `
-
-        <input type="file" class="evidenceImage" accept="image/*">
-
-    `;
-
-    container.appendChild(newInput);
-
-}
 function showReport() {
 
     document.getElementById("home").style.display = "none";
@@ -70,27 +32,27 @@ function createPDF() {
 
     const schoolPrincipal = document.getElementById("schoolPrincipal").value;
 
-    const images = document.getElementById("imagePicker").files;
+    const imagePicker = document.getElementById("imagePicker");
 
     let imageHTML = "";
 
-    for (let i = 0; i < images.length; i++) {
+    if (imagePicker && imagePicker.files.length > 0) {
 
-    
+        for (let i = 0; i < imagePicker.files.length; i++) {
 
-    const imageURL = URL.createObjectURL(images[i].files[0]);
+            const imageURL = URL.createObjectURL(imagePicker.files[i]);
 
-        const imageURL = URL.createObjectURL(images[i]);
+            imageHTML += `
 
-        imageHTML += `
+                <div class="evidence-image">
 
-            <div class="evidence-image">
+                    <img src="${imageURL}" alt="شاهد ${i + 1}">
 
-                <img src="${imageURL}" alt="شاهد ${i + 1}">
+                </div>
 
-            </div>
+            `;
 
-        `;
+        }
 
     }
 
@@ -294,8 +256,6 @@ h1 {
 
 }
 
-/* شبكة الصور */
-
 .evidence-image {
 
     display: inline-block;
@@ -377,10 +337,10 @@ h1 {
 <div class="school-header">
 
     <div class="school-info">
-
-        <div>المملكة العربية السعودية</div>
+    <div>المملكة العربية السعودية</div>
 
         <div>وزارة التعليم</div>
+
         <div>الإدارة العامة للتعليم بجدة</div>
 
         <div>الابتدائية الثانية عشرة والروضة الملحقة</div>
@@ -405,11 +365,7 @@ h1 {
 
         <div class="label">اسم العملية</div>
 
-        <div class="value">
-
-            ${process || ""}
-
-        </div>
+        <div class="value">${process || ""}</div>
 
     </td>
 
@@ -417,11 +373,7 @@ h1 {
 
         <div class="label">اليوم</div>
 
-        <div class="value">
-
-            ${day || ""}
-
-        </div>
+        <div class="value">${day || ""}</div>
 
     </td>
 
@@ -433,11 +385,7 @@ h1 {
 
         <div class="label">التاريخ</div>
 
-        <div class="value">
-
-            ${date || ""}
-
-        </div>
+        <div class="value">${date || ""}</div>
 
     </td>
 
@@ -445,11 +393,7 @@ h1 {
 
         <div class="label">الفئة المستهدفة</div>
 
-        <div class="value">
-
-            ${target || ""}
-
-        </div>
+        <div class="value">${target || ""}</div>
 
     </td>
 
@@ -461,11 +405,7 @@ h1 {
 
         <div class="label">عدد المستهدفين</div>
 
-        <div class="value">
-
-            ${targetCount || ""}
-
-        </div>
+        <div class="value">${targetCount || ""}</div>
 
     </td>
 
@@ -473,11 +413,7 @@ h1 {
 
         <div class="label">الهدف</div>
 
-        <div class="value">
-
-            ${goal || ""}
-
-        </div>
+        <div class="value">${goal || ""}</div>
 
     </td>
 
@@ -489,11 +425,7 @@ h1 {
 
         <div class="label">الملاحظات</div>
 
-        <div class="value">
-
-            ${notes || ""}
-
-        </div>
+        <div class="value">${notes || ""}</div>
 
     </td>
 
@@ -501,11 +433,7 @@ h1 {
 
         <div class="label">الإجراءات</div>
 
-        <div class="value">
-
-            ${procedures || ""}
-
-        </div>
+        <div class="value">${procedures || ""}</div>
 
     </td>
 
@@ -517,11 +445,7 @@ h1 {
 
     <div class="label">التوصيات</div>
 
-    <div class="value">
-
-        ${recommendations || ""}
-
-    </div>
+    <div class="value">${recommendations || ""}</div>
 
 </div>
 
@@ -589,6 +513,6 @@ h1 {
 
         newWindow.print();
 
-    }, 1500);
+    }, 1000);
 
 }
