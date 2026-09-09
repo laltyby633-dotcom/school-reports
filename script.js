@@ -1,5 +1,3 @@
-// إظهار صفحة التقرير
-
 function showReport() {
 
     document.getElementById("home").style.display = "none";
@@ -8,38 +6,23 @@ function showReport() {
 
 }
 
-// حفظ الصور المختارة
-
 let selectedImageFiles = [];
 
 function handleImages(input) {
 
-    if (!input || !input.files) {
-
-        return;
-
-    }
-
-    // إضافة الصور الجديدة إلى الصور السابقة
-
+    if (!input || !input.files) return ;
+        
     for (let i = 0; i < input.files.length; i++) {
 
         selectedImageFiles.push(input.files[i]);
 
     }
 
-    // عرض الصور
-
     displaySelectedImages();
-
-    // إعادة ضبط الاختيار حتى يمكن اختيار نفس الصورة مرة أخرى
 
     input.value = "";
 
 }
-
-// عرض الصور تحت خانة الشواهد
-
 function displaySelectedImages() {
 
     const container = document.getElementById("selectedImages");
@@ -102,8 +85,6 @@ function displaySelectedImages() {
 
 }
 
-// تحويل الصورة إلى Base64
-
 function imageToBase64(file) {
 
     return new Promise(function(resolve, reject) {
@@ -127,8 +108,6 @@ function imageToBase64(file) {
     });
 
 }
-
-// إنشاء التقرير
 
 async function createPDF() {
 
@@ -156,8 +135,6 @@ async function createPDF() {
 
     const schoolPrincipal = document.getElementById("schoolPrincipal").value;
 
-    // تحويل جميع الصور إلى Base64
-
     let imageHTML = "";
 
     for (let i = 0; i < selectedImageFiles.length; i++) {
@@ -183,8 +160,6 @@ async function createPDF() {
         }
 
     }
-
-    // محتوى التقرير
 
     const report = `
 
@@ -614,8 +589,6 @@ h1 {
 </html>
 
 `;
-
-    // فتح نافذة الطباعة
 
     const newWindow = window.
         open("", "_blank");
