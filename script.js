@@ -1,3 +1,20 @@
+function addImageInput() {
+
+    const container = document.getElementById("imageInputs");
+
+    const newInput = document.createElement("div");
+
+    newInput.className = "image-input";
+
+    newInput.innerHTML = `
+
+        <input type="file" class="evidenceImage" accept="image/*">
+
+    `;
+
+    container.appendChild(newInput);
+
+}
 function showReport() {
 
     document.getElementById("home").style.display = "none";
@@ -32,11 +49,19 @@ function createPDF() {
 
     const schoolPrincipal = document.getElementById("schoolPrincipal").value;
 
-    const images = document.getElementById("images").files;
+    const images = document.querySelectorAll(".evidenceImage");
 
     let imageHTML = "";
 
     for (let i = 0; i < images.length; i++) {
+
+    if (images[i].files.length === 0) {
+
+        continue;
+
+    }
+
+    const imageURL = URL.createObjectURL(images[i].files[0]);
 
         const imageURL = URL.createObjectURL(images[i]);
 
