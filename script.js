@@ -1,3 +1,5 @@
+// إظهار صفحة التقرير
+
 function showReport() {
 
     document.getElementById("home").style.display = "none";
@@ -6,7 +8,129 @@ function showReport() {
 
 }
 
-function createPDF() {
+// حفظ الصور المختارة
+
+let selectedImageFiles = [];
+
+function handleImages(input) {
+
+    if (!input || !input.files) {
+
+        return;
+
+    }
+
+    // إضافة الصور الجديدة إلى الصور السابقة
+
+    for (let i = 0; i < input.files.length; i++) {
+
+        selectedImageFiles.push(input.files[i]);
+
+    }
+
+    // عرض الصور
+
+    displaySelectedImages();
+
+    // إعادة ضبط الاختيار حتى يمكن اختيار نفس الصورة مرة أخرى
+
+    input.value = "";
+
+}
+
+// عرض الصور تحت خانة الشواهد
+
+function displaySelectedImages() {
+
+    const container = document.getElementById("selectedImages");
+
+    if (!container) {
+
+        return;
+
+    }
+
+    container.innerHTML = "";
+
+    selectedImageFiles.forEach(function(file, index) {
+
+        const imageBox = document.createElement("div");
+
+        imageBox.style.display = "inline-block";
+
+        imageBox.style.width = "120px";
+
+        imageBox.style.margin = "5px";
+
+        imageBox.style.textAlign = "center";
+
+        imageBox.style.verticalAlign = "top";
+
+        const img = document.createElement("img");
+
+        img.src = URL.createObjectURL(file);
+
+        img.style.width = "110px";
+
+        img.style.height = "80px";
+
+        img.style.objectFit = "contain";
+
+        img.style.border = "1px solid #2e7d32";
+
+        img.style.padding = "3px";
+
+        img.style.background = "white";
+
+        img.style.borderRadius = "5px";
+
+        const text = document.createElement("div");
+
+        text.textContent = "شاهد " + (index + 1);
+
+        text.style.fontSize = "12px";
+
+        text.style.marginTop = "3px";
+
+        imageBox.appendChild(img);
+
+        imageBox.appendChild(text);
+
+        container.appendChild(imageBox);
+
+    });
+
+}
+
+// تحويل الصورة إلى Base64
+
+function imageToBase64(file) {
+
+    return new Promise(function(resolve, reject) {
+
+        const reader = new FileReader();
+
+        reader.onload = function() {
+
+            resolve(reader.result);
+
+        };
+
+        reader.onerror = function() {
+
+            reject(reader.error);
+
+        };
+
+        reader.readAsDataURL(file);
+
+    });
+
+}
+
+// إنشاء التقرير
+
+async function createPDF() {
 
     const title = document.getElementById("title").value;
 
@@ -32,29 +156,35 @@ function createPDF() {
 
     const schoolPrincipal = document.getElementById("schoolPrincipal").value;
 
-    const imagePicker = document.getElementById("imagePicker");
+    // تحويل جميع الصور إلى Base64
 
     let imageHTML = "";
 
-    if (imagePicker && imagePicker.files.length > 0) {
+    for (let i = 0; i < selectedImageFiles.length; i++) {
 
-        for (let i = 0; i < imagePicker.files.length; i++) {
+        try {
 
-            const imageURL = URL.createObjectURL(imagePicker.files[i]);
+            const imageData = await imageToBase64(selectedImageFiles[i]);
 
             imageHTML += `
 
                 <div class="evidence-image">
 
-                    <img src="${imageURL}" alt="شاهد ${i + 1}">
+                    <img src="${imageData}" alt="شاهد ${i + 1}">
 
                 </div>
 
             `;
 
+        } catch (error) {
+
+            console.error("خطأ في تحميل الصورة:", error);
+
         }
 
     }
+
+    // محتوى التقرير
 
     const report = `
 
@@ -107,13 +237,6 @@ body {
     position: relative;
 
     height: 90px;
-
-    margin-bottom: 4px;
-
-}
-
-.school-info {
-
     position: absolute;
 
     right: 0;
@@ -337,7 +460,8 @@ h1 {
 <div class="school-header">
 
     <div class="school-info">
-    <div>المملكة العربية السعودية</div>
+
+        <div>المملكة العربية السعودية</div>
 
         <div>وزارة التعليم</div>
 
@@ -459,27 +583,27 @@ h1 {
 
     ${imageHTML}
 
-    <div class="signatures">
+</div>
 
-        <div class="signature">
+<div class="signatures">
 
-            معد التقرير
+    <div class="signature">
 
-            <br><br>
+        معد التقرير
 
-            ${reportWriter || ""}
+        <br><br>
 
-        </div>
+        ${reportWriter || ""}
 
-        <div class="signature">
+    </div>
 
-            مديرة المدرسة
+    <div class="signature">
 
-            <br><br>
+        مديرة المدرسة
 
-            ${schoolPrincipal || ""}
+        <br><br>
 
-        </div>
+        ${schoolPrincipal || ""}
 
     </div>
 
@@ -491,7 +615,10 @@ h1 {
 
 `;
 
-    const newWindow = window.open("", "_blank");
+    // فتح نافذة الطباعة
+
+    const newWindow = window.
+        open("", "_blank");
 
     if (!newWindow) {
 
@@ -507,7 +634,7 @@ h1 {
 
     newWindow.document.close();
 
-    setTimeout(function () {
+    setTimeout(function() {
 
         newWindow.focus();
 
@@ -516,3 +643,10 @@ h1 {
     }, 1000);
 
 }
+        
+
+    margin-bottom: 4px;
+
+}
+
+.school-info {
