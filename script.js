@@ -564,28 +564,36 @@ ${schoolPrincipal || ""}
 
 `;
 
-    const newWindow = window.open("", "_blank");
+    const printWindow = document.createElement("iframe");
 
-    if (!newWindow) {
+printWindow.style.position = "fixed";
 
-        alert("يرجى السماح بفتح النوافذ المنبثقة للموقع.");
+printWindow.style.right = "0";
 
-        return;
+printWindow.style.bottom = "0";
 
-    }
+printWindow.style.width = "0";
 
-    newWindow.document.open();
+printWindow.style.height = "0";
 
-    newWindow.document.write(report);
+printWindow.style.border = "0";
 
-    newWindow.document.close();
+document.body.appendChild(printWindow);
 
-    setTimeout(function() {
+const iframeDocument = printWindow.contentWindow.document;
 
-        newWindow.focus();
+iframeDocument.open();
 
-        newWindow.print();
+iframeDocument.write(report);
 
-    }, 1000);
+iframeDocument.close();
+
+setTimeout(function () {
+
+    printWindow.contentWindow.focus();
+
+    printWindow.contentWindow.print();
+
+}, 1000);
 
 }
