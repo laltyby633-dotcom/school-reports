@@ -538,7 +538,7 @@ ${imageHTML}
 
 <div class="signature">
 
-معد التقرير
+معد التقرير:
 
 <br><br>
 
@@ -548,7 +548,7 @@ ${reportWriter || ""}
 
 <div class="signature">
 
-مديرة المدرسة
+مديرة المدرسه:
 
 <br><br>
 
