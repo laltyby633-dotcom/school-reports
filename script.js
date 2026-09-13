@@ -6,6 +6,12 @@ function showReport() {
 
 }
 
+// ========================================
+
+// الصور
+
+// ========================================
+
 let selectedImageFiles = [];
 
 function handleImages(input) {
@@ -75,6 +81,13 @@ function displaySelectedImages() {
     });
 
 }
+
+// ========================================
+
+// تحويل الصورة إلى Base64
+
+// ========================================
+
 function imageToBase64(file) {
 
     return new Promise(function(resolve, reject) {
@@ -99,49 +112,150 @@ function imageToBase64(file) {
 
 }
 
+// ========================================
+
+// إنشاء التقرير PDF
+
+// ========================================
+
 async function createPDF() {
 
-    const title = document.getElementById("title").value;
+    // فتح نافذة الطباعة مباشرة عند الضغط على الزر
 
-    const process = document.getElementById("process").value;
+    // حتى لا يمنعها الجوال بسبب النوافذ المنبثقة
 
-    const day = document.getElementById("day").value;
+    const printWindow = window.open("", "_blank");
 
-    const date = document.getElementById("date").value;
+    // إذا كان المتصفح مانع النوافذ المنبثقة
 
-    const target = document.getElementById("target").value;
+    if (!printWindow) {
 
-    const targetCount = document.getElementById("targetCount").value;
+        alert(
 
-    const goal = document.getElementById("goal").value;
+            "لم يتم فتح نافذة التقرير. يرجى السماح بالنوافذ المنبثقة لهذا الموقع ثم المحاولة مرة أخرى."
 
-    const notes = document.getElementById("notes").value;
+        );
 
-    const procedures = document.getElementById("procedures").value;
+        return;
 
-    const recommendations = document.getElementById("recommendations").value;
+    }
 
-    const reportWriter = document.getElementById("reportWriter").value;
+    // ========================================
 
-    const schoolPrincipal = document.getElementById("schoolPrincipal").value;
+    // قراءة بيانات النموذج
+
+    // ========================================
+
+    const title =
+
+        document.getElementById("title").value;
+
+    const process =
+
+        document.getElementById("process").value;
+
+    const day =
+
+        document.getElementById("day").value;
+
+    const date =
+
+        document.getElementById("date").value;
+
+    const target =
+
+        document.getElementById("target").value;
+
+    const targetCount =
+
+        document.getElementById("targetCount").value;
+
+    const goal =
+
+        document.getElementById("goal").value;
+
+    const notes =
+
+        document.getElementById("notes").value;
+
+    const procedures =
+
+        document.getElementById("procedures").value;
+
+    const recommendations =
+
+        document.getElementById("recommendations").value;
+
+    const reportWriter =
+
+        document.getElementById("reportWriter").value;
+
+    const schoolPrincipal =
+
+        document.getElementById("schoolPrincipal").value;
+
+    // ========================================
+
+    // تجهيز الصور
+
+    // ========================================
 
     let imageHTML = "";
 
-    for (let i = 0; i < selectedImageFiles.length; i++) {
+    for (
 
-        const imageData = await imageToBase64(selectedImageFiles[i]);
+        let i = 0;
 
-        imageHTML += `
+        i < selectedImageFiles.length;
 
-            <div class="evidence-image">
+        i++
 
-                <img src="${imageData}" alt="شاهد ${i + 1}">
+    ) {
 
-            </div>
+        try {
 
-        `;
+            const imageData =
+
+                await imageToBase64(
+
+                    selectedImageFiles[i]
+
+                );
+
+            imageHTML += `
+
+                <div class="evidence-image">
+src="${imageData}"
+
+                        alt="شاهد ${i + 1}"
+
+                    >
+
+                </div>
+
+            `;
+
+        }
+
+        catch (error) {
+
+            console.error(
+
+                "خطأ في تحميل الصورة:",
+
+                error
+
+            );
+
+        }
 
     }
+
+    // ========================================
+
+    // محتوى التقرير
+
+    // ========================================
 
     const report = `
 
@@ -412,19 +526,30 @@ h1 {
         <div>وزارة التعليم</div>
 
         <div>الإدارة العامة للتعليم بجدة</div>
+
         <div>الابتدائية الثانية عشرة والروضة الملحقة</div>
 
     </div>
 
     <div class="logo-area">
 
-        <img src="logo.jpg" alt="شعار وزارة التعليم">
+        <img
+
+            src="logo.jpg"
+
+            alt="شعار وزارة التعليم"
+
+        >
 
     </div>
 
 </div>
 
-<h1>${title || "التقرير"}</h1>
+<h1>
+
+    ${title || "التقرير"}
+
+</h1>
 
 <table class="form-table">
 
@@ -432,37 +557,33 @@ h1 {
 
 <td>
 
-<div class="label">اسم العملية</div>
+<div class="label">
 
-<div class="value">${process || ""}</div>
+اسم العملية
 
-</td>
+</div>
 
-<td>
+<div class="value">
 
-<div class="label">اليوم</div>
+${process || ""}
 
-<div class="value">${day || ""}</div>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-<div class="label">التاريخ</div>
-
-<div class="value">${date || ""}</div>
+</div>
 
 </td>
 
 <td>
 
-<div class="label">الفئة المستهدفة</div>
+<div class="label">
 
-<div class="value">${target || ""}</div>
+اليوم
+
+</div>
+
+<div class="value">
+
+${day || ""}
+
+</div>
 
 </td>
 
@@ -472,17 +593,33 @@ h1 {
 
 <td>
 
-<div class="label">عدد المستهدفين</div>
+<div class="label">
 
-<div class="value">${targetCount || ""}</div>
+التاريخ
+
+</div>
+
+<div class="value">
+
+${date || ""}
+
+</div>
 
 </td>
 
 <td>
 
-<div class="label">الهدف</div>
+<div class="label">
 
-<div class="value">${goal || ""}</div>
+الفئة المستهدفة
+
+</div>
+
+<div class="value">
+
+${target || ""}
+
+</div>
 
 </td>
 
@@ -492,17 +629,68 @@ h1 {
 
 <td>
 
-<div class="label">الملاحظات</div>
+<div class="label">
 
-<div class="value">${notes || ""}</div>
+عدد المستهدفين
+
+</div>
+
+<div class="value">
+
+${targetCount || ""}
+
+</div>
 
 </td>
 
 <td>
 
-<div class="label">الإجراءات</div>
+<div class="label">
 
-<div class="value">${procedures || ""}</div>
+الهدف
+
+</div>
+
+<div class="value">
+
+${goal || ""}
+
+</div>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+<div class="label">
+
+الملاحظات
+
+</div>
+
+<div class="value">
+
+${notes || ""}
+
+</div>
+
+</td>
+
+<td>
+
+<div class="label">
+
+الإجراءات
+
+</div>
+<div class="value">
+
+${procedures || ""}
+
+</div>
 
 </td>
 
@@ -512,7 +700,11 @@ h1 {
 
 <div class="full-row">
 
-<div class="label">التوصيات</div>
+<div class="label">
+
+التوصيات
+
+</div>
 
 <div class="value">
 
@@ -540,7 +732,9 @@ ${imageHTML}
 
 معد التقرير:
 
-<br><br>
+<br>
+
+<br>
 
 ${reportWriter || ""}
 
@@ -548,9 +742,11 @@ ${reportWriter || ""}
 
 <div class="signature">
 
-مديرة المدرسه:
+مديرة المدرسة:
 
-<br><br>
+<br>
+
+<br>
 
 ${schoolPrincipal || ""}
 
@@ -564,36 +760,32 @@ ${schoolPrincipal || ""}
 
 `;
 
-    const printWindow = document.createElement("iframe");
+    // ========================================
 
-printWindow.style.position = "fixed";
+    // وضع التقرير في نافذة الطباعة
 
-printWindow.style.right = "0";
+    // ========================================
 
-printWindow.style.bottom = "0";
+    printWindow.document.open();
 
-printWindow.style.width = "0";
+    printWindow.document.write(report);
 
-printWindow.style.height = "0";
+    printWindow.document.close();
 
-printWindow.style.border = "0";
+    // ========================================
 
-document.body.appendChild(printWindow);
+    // الانتظار ثم فتح نافذة الطباعة
 
-const iframeDocument = printWindow.contentWindow.document;
+    // ========================================
 
-iframeDocument.open();
+    setTimeout(function() {
 
-iframeDocument.write(report);
+        printWindow.focus();
 
-iframeDocument.close();
+        printWindow.print();
 
-setTimeout(function () {
-
-    printWindow.contentWindow.focus();
-
-    printWindow.contentWindow.print();
-
-}, 1000);
+    }, 1500);
 
 }
+
+                    <img
