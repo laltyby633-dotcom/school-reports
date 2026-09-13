@@ -1,22 +1,32 @@
 function showReport() {
 
-    document.getElementById("home").style.display = "none";
+    const home = document.getElementById("home");
 
-    document.getElementById("reportPage").style.display = "block";
+    const reportPage = document.getElementById("reportPage");
+
+    if (home) {
+
+        home.style.display = "none";
+
+    }
+
+    if (reportPage) {
+
+        reportPage.style.display = "block";
+
+    }
 
 }
-
-// ========================================
-
-// الصور
-
-// ========================================
 
 let selectedImageFiles = [];
 
 function handleImages(input) {
 
-    if (!input || !input.files) return;
+    if (!input || !input.files) {
+
+        return;
+
+    }
 
     for (let i = 0; i < input.files.length; i++) {
 
@@ -34,7 +44,11 @@ function displaySelectedImages() {
 
     const container = document.getElementById("selectedImages");
 
-    if (!container) return;
+    if (!container) {
+
+        return;
+
+    }
 
     container.innerHTML = "";
 
@@ -82,12 +96,6 @@ function displaySelectedImages() {
 
 }
 
-// ========================================
-
-// تحويل الصورة إلى Base64
-
-// ========================================
-
 function imageToBase64(file) {
 
     return new Promise(function(resolve, reject) {
@@ -112,150 +120,83 @@ function imageToBase64(file) {
 
 }
 
-// ========================================
-
-// إنشاء التقرير PDF
-
-// ========================================
-
 async function createPDF() {
-
-    // فتح نافذة الطباعة مباشرة عند الضغط على الزر
-
-    // حتى لا يمنعها الجوال بسبب النوافذ المنبثقة
 
     const printWindow = window.open("", "_blank");
 
-    // إذا كان المتصفح مانع النوافذ المنبثقة
-
     if (!printWindow) {
 
-        alert(
-
-            "لم يتم فتح نافذة التقرير. يرجى السماح بالنوافذ المنبثقة لهذا الموقع ثم المحاولة مرة أخرى."
-
-        );
+        alert("يرجى السماح بالنوافذ المنبثقة لهذا الموقع ثم الضغط على إنشاء التقرير مرة أخرى.");
 
         return;
 
     }
 
-    // ========================================
+    const title = document.getElementById("title")?.value || "";
 
-    // قراءة بيانات النموذج
+    const process = document.getElementById("process")?.value || "";
 
-    // ========================================
+    const day = document.getElementById("day")?.value || "";
 
-    const title =
+    const date = document.getElementById("date")?.value || "";
 
-        document.getElementById("title").value;
+    const target = document.getElementById("target")?.value || "";
 
-    const process =
+    const targetCount = document.getElementById("targetCount")?.value || "";
 
-        document.getElementById("process").value;
+    const goal = document.getElementById("goal")?.value || "";
 
-    const day =
+    const notes = document.getElementById("notes")?.value || "";
 
-        document.getElementById("day").value;
+    const procedures = document.getElementById("procedures")?.value || "";
 
-    const date =
+    const recommendations = document.getElementById("recommendations")?.value || "";
 
-        document.getElementById("date").value;
+    const reportWriter = document.getElementById("reportWriter")?.value || "";
 
-    const target =
-
-        document.getElementById("target").value;
-
-    const targetCount =
-
-        document.getElementById("targetCount").value;
-
-    const goal =
-
-        document.getElementById("goal").value;
-
-    const notes =
-
-        document.getElementById("notes").value;
-
-    const procedures =
-
-        document.getElementById("procedures").value;
-
-    const recommendations =
-
-        document.getElementById("recommendations").value;
-
-    const reportWriter =
-
-        document.getElementById("reportWriter").value;
-
-    const schoolPrincipal =
-
-        document.getElementById("schoolPrincipal").value;
-
-    // ========================================
-
-    // تجهيز الصور
-
-    // ========================================
+    const schoolPrincipal = document.getElementById("schoolPrincipal")?.value || "";
 
     let imageHTML = "";
 
-    for (
-
-        let i = 0;
-
-        i < selectedImageFiles.length;
-
-        i++
-
-    ) {
+    for (let i = 0; i < selectedImageFiles.length; i++) {
 
         try {
 
-            const imageData =
-
-                await imageToBase64(
-
-                    selectedImageFiles[i]
-
-                );
+            const imageData = await imageToBase64(selectedImageFiles[i]);
 
             imageHTML += `
 
                 <div class="evidence-image">
-src="${imageData}"
 
-                        alt="شاهد ${i + 1}"
+                    <img src="${imageData}" alt="شاهد ${i + 1}">
 
-                    >
+                    <div class="image-number">شاهد ${i + 1}</div>
 
                 </div>
 
             `;
 
-        }
+        } catch (error) {
 
-        catch (error) {
-
-            console.error(
-
-                "خطأ في تحميل الصورة:",
-
-                error
-
-            );
+            console.error("خطأ في تحميل الصورة:", error);
 
         }
 
     }
 
-    // ========================================
+    if (imageHTML === "") {
 
-    // محتوى التقرير
+        imageHTML = `
 
-    // ========================================
+            <div class="no-images">
+
+                لا توجد صور مرفقة
+
+            </div>
+
+        `;
+
+    }
 
     const report = `
 
@@ -290,9 +231,6 @@ body {
     font-family: Arial, Tahoma, sans-serif;
 
     direction: rtl;
-
-    margin: 0;
-
     padding: 0;
 
     color: #333;
@@ -489,6 +427,24 @@ h1 {
 
 }
 
+.image-number {
+
+    font-size: 10px;
+
+    margin-top: 2px;
+
+}
+
+.no-images {
+
+    text-align: center;
+
+    padding: 10px;
+
+    color: #777;
+
+}
+
 .signatures {
 
     display: flex;
@@ -533,23 +489,13 @@ h1 {
 
     <div class="logo-area">
 
-        <img
-
-            src="logo.jpg"
-
-            alt="شعار وزارة التعليم"
-
-        >
+        <img src="logo.jpg" alt="شعار وزارة التعليم">
 
     </div>
 
 </div>
 
-<h1>
-
-    ${title || "التقرير"}
-
-</h1>
+<h1>${title || "التقرير"}</h1>
 
 <table class="form-table">
 
@@ -557,33 +503,17 @@ h1 {
 
 <td>
 
-<div class="label">
+<div class="label">اسم العملية</div>
 
-اسم العملية
-
-</div>
-
-<div class="value">
-
-${process || ""}
-
-</div>
+<div class="value">${process}</div>
 
 </td>
 
 <td>
 
-<div class="label">
+<div class="label">اليوم</div>
 
-اليوم
-
-</div>
-
-<div class="value">
-
-${day || ""}
-
-</div>
+<div class="value">${day}</div>
 
 </td>
 
@@ -593,33 +523,17 @@ ${day || ""}
 
 <td>
 
-<div class="label">
+<div class="label">التاريخ</div>
 
-التاريخ
-
-</div>
-
-<div class="value">
-
-${date || ""}
-
-</div>
+<div class="value">${date}</div>
 
 </td>
 
 <td>
 
-<div class="label">
+<div class="label">الفئة المستهدفة</div>
 
-الفئة المستهدفة
-
-</div>
-
-<div class="value">
-
-${target || ""}
-
-</div>
+<div class="value">${target}</div>
 
 </td>
 
@@ -629,33 +543,17 @@ ${target || ""}
 
 <td>
 
-<div class="label">
+<div class="label">عدد المستهدفين</div>
 
-عدد المستهدفين
-
-</div>
-
-<div class="value">
-
-${targetCount || ""}
-
-</div>
+<div class="value">${targetCount}</div>
 
 </td>
 
 <td>
 
-<div class="label">
+<div class="label">الهدف</div>
 
-الهدف
-
-</div>
-
-<div class="value">
-
-${goal || ""}
-
-</div>
+<div class="value">${goal}</div>
 
 </td>
 
@@ -665,32 +563,17 @@ ${goal || ""}
 
 <td>
 
-<div class="label">
+<div class="label">الملاحظات</div>
 
-الملاحظات
-
-</div>
-
-<div class="value">
-
-${notes || ""}
-
-</div>
+<div class="value">${notes}</div>
 
 </td>
 
 <td>
 
-<div class="label">
+<div class="label">الإجراءات</div>
 
-الإجراءات
-
-</div>
-<div class="value">
-
-${procedures || ""}
-
-</div>
+<div class="value">${procedures}</div>
 
 </td>
 
@@ -700,27 +583,15 @@ ${procedures || ""}
 
 <div class="full-row">
 
-<div class="label">
+<div class="label">التوصيات</div>
 
-التوصيات
-
-</div>
-
-<div class="value">
-
-${recommendations || ""}
-
-</div>
+<div class="value">${recommendations}</div>
 
 </div>
 
 <div class="evidence-page">
 
-<div class="evidence-title">
-
-الشواهد (صور)
-
-</div>
+<div class="evidence-title">الشواهد (صور)</div>
 
 ${imageHTML}
 
@@ -736,7 +607,7 @@ ${imageHTML}
 
 <br>
 
-${reportWriter || ""}
+${reportWriter}
 
 </div>
 
@@ -748,7 +619,7 @@ ${reportWriter || ""}
 
 <br>
 
-${schoolPrincipal || ""}
+${schoolPrincipal}
 
 </div>
 
@@ -760,23 +631,11 @@ ${schoolPrincipal || ""}
 
 `;
 
-    // ========================================
-
-    // وضع التقرير في نافذة الطباعة
-
-    // ========================================
-
     printWindow.document.open();
 
     printWindow.document.write(report);
 
     printWindow.document.close();
-
-    // ========================================
-
-    // الانتظار ثم فتح نافذة الطباعة
-
-    // ========================================
 
     setTimeout(function() {
 
@@ -788,4 +647,4 @@ ${schoolPrincipal || ""}
 
 }
 
-                    <img
+    margin: 0;
